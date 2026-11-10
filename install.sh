@@ -24,7 +24,7 @@ BIN_DIR="${HOME}/.local/bin"
 AUTOSTART_DIR="${HOME}/.config/autostart"
 SYSTEMD_USER_DIR="${HOME}/.config/systemd/user"
 
-REPO_URL="https://github.com/__REPO_SLUG__"
+REPO_URL="https://github.com/BestFortune/macos-spotlight"
 BRANCH="main"
 
 printf "\n${BOLD}${BLUE}"
@@ -106,7 +106,7 @@ setup_files() {
         log_info "Fetching latest release files from GitHub..."
         local TEMP_DIR
         TEMP_DIR="$(mktemp -d)"
-        git clone --depth=1 "https://github.com/__REPO_SLUG__.git" "${TEMP_DIR}"
+        git clone --depth=1 "https://github.com/BestFortune/macos-spotlight.git" "${TEMP_DIR}"
         cp -r "${TEMP_DIR}"/* "${INSTALL_DIR}/"
         rm -rf "${TEMP_DIR}"
     fi

@@ -4,7 +4,7 @@ A native, ultra-responsive replica of **macOS Sonoma / Sequoia Spotlight Search*
 
 Built with GTK+ 3, Python, Cairo, and an optimized C IPC client, it opens in under **5 milliseconds** with <kbd>Alt</kbd>+<kbd>Space</kbd> and stays persistent across system restarts.
 
-![macOS Spotlight](https://raw.githubusercontent.com/__REPO_SLUG__/main/preview.png)
+![macOS Spotlight](https://raw.githubusercontent.com/BestFortune/macos-spotlight/main/preview.png)
 
 ---
 
@@ -67,7 +67,7 @@ Built with GTK+ 3, Python, Cairo, and an optimized C IPC client, it opens in und
 Run this single command in your terminal on any Linux distribution (Arch, CachyOS, Ubuntu, Debian, Mint, Fedora, openSUSE):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/__REPO_SLUG__/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/BestFortune/macos-spotlight/main/install.sh | bash
 ```
 
 The installer automatically:
@@ -97,7 +97,7 @@ The installer automatically:
 To cleanly remove macOS Spotlight and restore original desktop shortcut settings:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/__REPO_SLUG__/main/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/BestFortune/macos-spotlight/main/uninstall.sh | bash
 ```
 
 Or from a local clone:

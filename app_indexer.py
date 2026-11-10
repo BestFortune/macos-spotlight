@@ -241,27 +241,41 @@ class AppIndexer:
 
     def launch(self, app: AppEntry):
         self.record_launch(app.id)
+        # 1. Try gtk-launch first: cleanly delegates to desktop session outside our cgroup
+        if app.id:
+            try:
+                if subprocess.call(f"gtk-launch '{app.id}' >/dev/null 2>&1", shell=True) == 0:
+                    return
+            except Exception:
+                pass
+
+        # 2. Build command (with terminal wrapper if needed)
         cmd = app.exec_cmd
         if app.terminal:
-            # Run in terminal
             terminals = ['alacritty', 'gnome-terminal', 'konsole', 'xterm']
-            found_term = None
+            found_term = 'xterm'
             for t in terminals:
                 if subprocess.call(f"which {t} >/dev/null 2>&1", shell=True) == 0:
                     found_term = t
                     break
             if found_term == 'alacritty':
-                full_cmd = f"alacritty -e {cmd}"
+                cmd = f"alacritty -e {cmd}"
             elif found_term == 'gnome-terminal':
-                full_cmd = f"gnome-terminal -- {cmd}"
+                cmd = f"gnome-terminal -- {cmd}"
             elif found_term == 'konsole':
-                full_cmd = f"konsole -e {cmd}"
+                cmd = f"konsole -e {cmd}"
             else:
-                full_cmd = f"xterm -e {cmd}"
-            subprocess.Popen(full_cmd, shell=True, start_new_session=True)
-        else:
-            # Launch directly
-            subprocess.Popen(cmd, shell=True, start_new_session=True)
+                cmd = f"xterm -e {cmd}"
+
+        # 3. Try systemd-run --user --scope to keep launched app out of spotlight's service unit
+        try:
+            if subprocess.call(f"systemd-run --user --scope {cmd} >/dev/null 2>&1", shell=True) == 0:
+                return
+        except Exception:
+            pass
+
+        # 4. Fallback detached process
+        subprocess.Popen(cmd, shell=True, start_new_session=True)
 
     def search(self, query: str, limit: int = 15) -> List[Any]:
         q = query.strip().lower()
